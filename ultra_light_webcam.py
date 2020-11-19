@@ -4,8 +4,11 @@ import numpy as np
 from imutils import face_utils
 from box_utils import *
 
+import warnings
+
 import onnx
 import onnxruntime as ort
+from onnx import optimizer
 from onnx_tf.backend import prepare
 
 video_capture = cv2.VideoCapture(0)
@@ -13,6 +16,7 @@ video_capture = cv2.VideoCapture(0)
 onnx_path = 'UltraLight/ultra_light_640.onnx'
 onnx_model = onnx.load(onnx_path)
 predictor = prepare(onnx_model)
+
 ort_session = ort.InferenceSession(onnx_path)
 input_name = ort_session.get_inputs()[0].name
 
@@ -59,3 +63,5 @@ while True:
 # Release handle to the webcam
 video_capture.release()
 cv2.destroyAllWindows()
+warnings.simplefilter("ignore")
+

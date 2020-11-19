@@ -1,0 +1,5 @@
+Re-isntalled all required libraries
+Re-installed CUDA
+Added missing CUDA dll file
+Updated tensorflow
+Custom installing CUDA toolkit
