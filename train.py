@@ -2,10 +2,10 @@ import os
 import cv2
 import dlib
 import numpy as np
+import onnx
 from imutils import face_utils
 import tensorflow as tf
 import pickle
-import onnx
 import onnxruntime as ort
 from onnx_tf.backend import prepare
 
