@@ -1,3 +1,4 @@
+
 import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 import cv2
@@ -131,9 +132,9 @@ with open("embeddings/embeddings.pkl", "rb") as f:
     (saved_embeds, names) = pickle.load(f)
 
 with tf.Graph().as_default():
-    with tf.Session() as sess:
+    with tf.compat.v1.Session() as sess:
 
-        saver = tf.train.import_meta_graph('models/mfn/m1/mfn.ckpt.meta')
+        saver = tf.compat.v1.train.import_meta_graph('models/mfn/m1/mfn.ckpt.meta')
         saver.restore(sess, 'models/mfn/m1/mfn.ckpt')
 
         images_placeholder = tf.get_default_graph().get_tensor_by_name("input:0")

@@ -9,6 +9,8 @@ import pickle
 import onnxruntime as ort
 from onnx_tf.backend import prepare
 
+
+
 def area_of(left_top, right_bottom):
     """
     Compute the areas of rectangles given two corners.
