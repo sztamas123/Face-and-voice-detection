@@ -30,19 +30,23 @@ protoPath = os.path.sep.join([args["detector"], "deploy.prototxt"])
 modelPath = os.path.sep.join([args["detector"],
                               "res10_300x300_ssd_iter_140000.caffemodel"])
 detector = cv2.dnn.readNetFromCaffe(protoPath, modelPath)
+
 # load our serialized face embedding model from disk
 print("[INFO] loading face recognizer...")
 embedder = cv2.dnn.readNetFromTorch("nn4.small2.v1.t7")
+
 # load the actual face recognition model along with the label encoder
 recognizer = pickle.loads(open(args["recognizer"], "rb").read())
 le = pickle.loads(open(args["le"], "rb").read())
 
-# initialize the video stream, then allow the camera sensor to warm up
+# initialize the video stream
 print("[INFO] starting video stream...")
 vs = VideoStream(src=0).start()
 time.sleep(2.0)
-# start the FPS throughput estimator
+
+# start the FPS estimator
 fps = FPS().start()
+
 # loop over frames from the video file stream
 while True:
     # grab the frame from the threaded video stream
@@ -63,7 +67,7 @@ while True:
 
     # loop over the detections
     for i in range(0, detections.shape[2]):
-        # extract the confidence (i.e., probability) associated with
+        # extract the confidence (probability) associated with
         # the prediction
         confidence = detections[0, 0, i, 2]
         # filter out weak detections

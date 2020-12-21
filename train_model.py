@@ -6,6 +6,7 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.svm import SVC
 import argparse
 import pickle
+
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-e", "--embeddings", required=True,
@@ -21,6 +22,7 @@ print("[INFO] loading face embeddings...")
 data = pickle.loads(open(args["embeddings"], "rb").read())
 # encode the labels
 print("[INFO] encoding labels...")
+# holds the names of the people our model can recognize
 le = LabelEncoder()
 labels = le.fit_transform(data["names"])
 
