@@ -17,6 +17,8 @@ ap.add_argument("-l", "--le", required=True,
 	help="path to output label encoder")
 args = vars(ap.parse_args())
 
+
+
 #load the face embeddings
 print("[INFO] loading face embeddings...")
 data = pickle.loads(open(args["embeddings"], "rb").read())

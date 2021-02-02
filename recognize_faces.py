@@ -9,6 +9,7 @@ import pickle
 import time
 import cv2
 import os
+import logging
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
@@ -23,6 +24,8 @@ ap.add_argument("-l", "--le", required=True,
 ap.add_argument("-c", "--confidence", type=float, default=0.5,
                 help="minimum probability to filter weak detections")
 args = vars(ap.parse_args())
+
+logging.basicConfig(filename='facerec.log', level=logging.INFO)
 
 # load our serialized face detector from disk
 print("[INFO] loading face detector...")

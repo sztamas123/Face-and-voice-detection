@@ -7,6 +7,8 @@ import imutils
 import pickle
 import cv2
 import os
+import logging
+
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--dataset", required=True,
@@ -21,18 +23,21 @@ ap.add_argument("-c", "--confidence", type=float, default=0.5,
                 help="minimum probability to filter weak detections")
 args = vars(ap.parse_args())
 
+logging.basicConfig(filename='facerec.log', level=logging.INFO)
+
+
 # load face detector
-print("[INFO] loading face detector...")
+logging.info('Loading face detector...')
 protoPath = os.path.sep.join([args["detector"], "deploy.prototxt"])
 modelPath = os.path.sep.join([args["detector"],
                               "res10_300x300_ssd_iter_140000.caffemodel"])
 detector = cv2.dnn.readNetFromCaffe(protoPath, modelPath)
 # load our serialized face embedding model from disk
-print("[INFO] loading face recognizer...")
+logging.info("Loading face recognizer...")
 embedder = cv2.dnn.readNetFromTorch("nn4.small2.v1.t7")
 
 # grab the paths to the input images in our dataset
-print("[INFO] quantifying faces...")
+logging.info("Quantifying faces...")
 imagePaths = list(paths.list_images(args["dataset"]))
 # initialize our lists of extracted facial embeddings and
 # corresponding people names
@@ -45,7 +50,7 @@ total = 0
 # loop over the image paths
 for (i, imagePath) in enumerate(imagePaths):
     # extract the person name from the image path
-    print("[INFO] processing image {}/{}".format(i + 1, len(imagePaths)))
+    logging.info("Processing image {}/{}".format(i + 1, len(imagePaths)))
     name = imagePath.split(os.path.sep)[-2]
     # load the image, resize it to have a width of 600 pixels (while
     # maintaining the aspect ratio), and then grab the image
@@ -97,7 +102,7 @@ for (i, imagePath) in enumerate(imagePaths):
             total += 1
 
 # dump the facial embeddings + names to disk
-print("[INFO] serializing {} encodings...".format(total))
+logging.info("Serializing {} encodings...".format(total))
 data = {"embeddings": knownEmbeddings, "names": knownNames}
 f = open(args["embeddings"], "wb")
 f.write(pickle.dumps(data))
