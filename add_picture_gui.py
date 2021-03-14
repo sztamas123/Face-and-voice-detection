@@ -4,6 +4,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtPrintSupport import *
 from PyQt5.QtMultimedia import *
 from PyQt5.QtMultimediaWidgets import *
+import subprocess
 
 import os
 import sys
@@ -52,6 +53,13 @@ class MainWindow(QMainWindow):
         camera_selector.addItems([c.description() for c in self.available_cameras])
         camera_selector.currentIndexChanged.connect( self.select_camera )
 
+
+        extract_images = QAction(QIcon(os.path.join('icons', 'extract.png')), "Extract", self)
+        change_folder_action.setStatusTip("Extract embeddings of the photos.")
+        extract_images.triggered.connect(self.train)
+        camera_toolbar.addAction(extract_images)
+
+
         camera_toolbar.addWidget(camera_selector)
 
 
@@ -86,6 +94,11 @@ class MainWindow(QMainWindow):
         if path:
             self.save_path = path
             self.save_seq = 0
+
+
+    def train(self):
+        subprocess.call(["./extract.sh"])
+
 
     def alert(self, s):
         """
