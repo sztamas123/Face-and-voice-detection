@@ -8,7 +8,18 @@ import pickle
 import cv2
 import os
 import logging
+from configparser import ConfigParser
 
+
+config_object = ConfigParser()
+config_object.read('config.ini')
+config = config_object['DEFAULT']
+
+print(config['PATH'])
+print(config.getint('NUMBER'))
+print(config.getboolean('BOOLEAN'))
+
+exit(1)
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--dataset", required=True,
@@ -52,9 +63,8 @@ for (i, imagePath) in enumerate(imagePaths):
     # extract the person name from the image path
     logging.info("Processing image {}/{}".format(i + 1, len(imagePaths)))
     name = imagePath.split(os.path.sep)[-2]
-    # load the image, resize it to have a width of 600 pixels (while
-    # maintaining the aspect ratio), and then grab the image
-    # dimensions
+    # load the image, resize it to have a width of 600 pixels,
+    # and then grab the image dimensions
     image = cv2.imread(imagePath)
     image = imutils.resize(image, width=600)
     (h, w) = image.shape[:2]
