@@ -55,9 +55,15 @@ class MainWindow(QMainWindow):
 
 
         extract_images = QAction(QIcon(os.path.join('icons', 'extract.png')), "Extract", self)
-        change_folder_action.setStatusTip("Extract embeddings of the photos.")
+        extract_images.setStatusTip("Extract embeddings of the photos.")
         extract_images.triggered.connect(self.train)
         camera_toolbar.addAction(extract_images)
+
+        run_app = QAction(QIcon(os.path.join('icons', 'extract.png')), "Run", self)
+        run_app.setStatusTip("Run the face recognizer")
+        run_app.triggered.connect(self.startApp)
+        camera_toolbar.addAction(run_app)
+
 
 
         camera_toolbar.addWidget(camera_selector)
@@ -99,6 +105,8 @@ class MainWindow(QMainWindow):
     def train(self):
         subprocess.call(["./extract.sh"])
 
+    def startApp(self):
+        subprocess.call(["face_rec.sh"])
 
     def alert(self, s):
         """
